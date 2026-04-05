@@ -16,7 +16,7 @@ import androidx.core.app.NotificationCompat
 object FlightNotificationHelper {
 
     private const val CHANNEL_ID = "flight_updates"
-    private const val CHANNEL_NAME = "Flight Updates"
+    private const val CHANNEL_NAME = "עדכוני טיסה"
     private const val NOTIFICATION_ID = 1001
 
     fun createChannel(context: Context) {
@@ -26,7 +26,7 @@ object FlightNotificationHelper {
                 CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
-                description = "Live updates for your flight"
+                description = "עדכונים חיים לטיסתך"
             }
             val manager = context.getSystemService(NotificationManager::class.java)
             manager.createNotificationChannel(channel)
@@ -44,24 +44,24 @@ object FlightNotificationHelper {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val collapsedText = "${state.origin} → ${state.destination} • Gate ${state.gate} • Departs in ${state.minutesUntilDeparture} min"
+        val collapsedText = "${state.origin} ← ${state.destination} • שער ${state.gate} • יוצא בעוד ${state.minutesUntilDeparture} דק'"
 
         val expandedText = buildString {
-            appendLine("Your flight ${state.flightNumber} from ${state.origin} (${state.originCode}) to ${state.destination} (${state.destinationCode}) is now boarding.")
+            appendLine("טיסה ${state.flightNumber} מ${state.origin} (${state.originCode}) ל${state.destination} (${state.destinationCode}) מתחילה עלייה למטוס.")
             appendLine()
-            appendLine("🛫  Departure:  ${state.departureTime}")
-            appendLine("🚪  Gate:       ${state.gate}")
-            appendLine("💺  Seat:       ${state.seat} (${state.seatType.displayName()})")
-            append("📋  Status:     ${state.status.displayName()}")
+            appendLine("🛫  יציאה:   ${state.departureTime}")
+            appendLine("🚪  שער:     ${state.gate}")
+            appendLine("💺  מושב:    ${state.seat} (${state.seatType.displayName()})")
+            append("📋  סטטוס:   ${state.status.displayName()}")
         }
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("✈️ Flight ${state.flightNumber} — Boarding Soon")
+            .setContentTitle("✈️ טיסה ${state.flightNumber} — עלייה למטוס בקרוב")
             .setContentText(collapsedText)
             .setStyle(NotificationCompat.BigTextStyle().bigText(expandedText))
             .setContentIntent(pendingIntent)
-            .addAction(0, "Tap for more details", pendingIntent)
+            .addAction(0, "לחץ לפרטים נוספים", pendingIntent)
             .setAutoCancel(true)
             .build()
 
@@ -70,14 +70,14 @@ object FlightNotificationHelper {
     }
 
     private fun SeatType.displayName() = when (this) {
-        SeatType.WINDOW -> "Window"
-        SeatType.MIDDLE -> "Middle"
-        SeatType.AISLE -> "Aisle"
+        SeatType.WINDOW -> "חלון"
+        SeatType.MIDDLE -> "אמצע"
+        SeatType.AISLE -> "מעבר"
     }
 
     private fun FlightStatus.displayName() = when (this) {
-        FlightStatus.ON_TIME -> "On Time"
-        FlightStatus.DELAYED -> "Delayed"
-        FlightStatus.CANCELLED -> "Cancelled"
+        FlightStatus.ON_TIME -> "בזמן"
+        FlightStatus.DELAYED -> "מאוחר"
+        FlightStatus.CANCELLED -> "מבוטל"
     }
 }

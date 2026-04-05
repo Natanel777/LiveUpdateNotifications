@@ -42,7 +42,7 @@ fun FlightFormScreen(viewModel: FlightViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Flight Details") },
+                title = { Text("פרטי טיסה") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
@@ -57,7 +57,7 @@ fun FlightFormScreen(viewModel: FlightViewModel) {
         ) {
             item { Spacer(modifier = Modifier.height(8.dp)) }
 
-            item { SectionHeader(title = "Route") }
+            item { SectionHeader(title = "מסלול") }
 
             item {
                 Row(
@@ -67,13 +67,13 @@ fun FlightFormScreen(viewModel: FlightViewModel) {
                     OutlinedTextField(
                         value = state.origin,
                         onValueChange = viewModel::onOriginChange,
-                        label = { Text("Origin City") },
+                        label = { Text("עיר מוצא") },
                         modifier = Modifier.weight(2f)
                     )
                     OutlinedTextField(
                         value = state.originCode,
                         onValueChange = viewModel::onOriginCodeChange,
-                        label = { Text("Code") },
+                        label = { Text("קוד") },
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -87,19 +87,19 @@ fun FlightFormScreen(viewModel: FlightViewModel) {
                     OutlinedTextField(
                         value = state.destination,
                         onValueChange = viewModel::onDestinationChange,
-                        label = { Text("Destination City") },
+                        label = { Text("עיר יעד") },
                         modifier = Modifier.weight(2f)
                     )
                     OutlinedTextField(
                         value = state.destinationCode,
                         onValueChange = viewModel::onDestinationCodeChange,
-                        label = { Text("Code") },
+                        label = { Text("קוד") },
                         modifier = Modifier.weight(1f)
                     )
                 }
             }
 
-            item { SectionHeader(title = "Schedule") }
+            item { SectionHeader(title = "לוח זמנים") }
 
             item {
                 Row(
@@ -109,14 +109,14 @@ fun FlightFormScreen(viewModel: FlightViewModel) {
                     OutlinedTextField(
                         value = state.departureDate,
                         onValueChange = viewModel::onDepartureDateChange,
-                        label = { Text("Departure Date") },
+                        label = { Text("תאריך יציאה") },
                         placeholder = { Text("YYYY-MM-DD") },
                         modifier = Modifier.weight(1f)
                     )
                     OutlinedTextField(
                         value = state.returnDate,
                         onValueChange = viewModel::onReturnDateChange,
-                        label = { Text("Return Date") },
+                        label = { Text("תאריך חזרה") },
                         placeholder = { Text("YYYY-MM-DD") },
                         modifier = Modifier.weight(1f)
                     )
@@ -131,20 +131,20 @@ fun FlightFormScreen(viewModel: FlightViewModel) {
                     OutlinedTextField(
                         value = state.departureTime,
                         onValueChange = viewModel::onDepartureTimeChange,
-                        label = { Text("Departure Time") },
+                        label = { Text("שעת יציאה") },
                         placeholder = { Text("HH:MM") },
                         modifier = Modifier.weight(1f)
                     )
                     OutlinedTextField(
                         value = state.minutesUntilDeparture,
                         onValueChange = viewModel::onMinutesUntilDepartureChange,
-                        label = { Text("Departs In (min)") },
+                        label = { Text("יוצא בעוד (דק')") },
                         modifier = Modifier.weight(1f)
                     )
                 }
             }
 
-            item { SectionHeader(title = "Flight Info") }
+            item { SectionHeader(title = "פרטי הטיסה") }
 
             item {
                 Row(
@@ -154,19 +154,19 @@ fun FlightFormScreen(viewModel: FlightViewModel) {
                     OutlinedTextField(
                         value = state.flightNumber,
                         onValueChange = viewModel::onFlightNumberChange,
-                        label = { Text("Flight Number") },
+                        label = { Text("מספר טיסה") },
                         modifier = Modifier.weight(1f)
                     )
                     OutlinedTextField(
                         value = state.gate,
                         onValueChange = viewModel::onGateChange,
-                        label = { Text("Gate") },
+                        label = { Text("שער") },
                         modifier = Modifier.weight(1f)
                     )
                     OutlinedTextField(
                         value = state.seat,
                         onValueChange = viewModel::onSeatChange,
-                        label = { Text("Seat") },
+                        label = { Text("מושב") },
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -193,7 +193,7 @@ fun FlightFormScreen(viewModel: FlightViewModel) {
                     onClick = { FlightNotificationHelper.showNotification(context, state) },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Show Notification")
+                    Text("הצג התראה")
                 }
             }
 
@@ -223,7 +223,7 @@ private fun SeatTypeSelector(
     val options = SeatType.entries
     Column {
         Text(
-            text = "Seat Type",
+            text = "סוג מושב",
             style = MaterialTheme.typography.labelMedium,
             modifier = Modifier.padding(bottom = 4.dp)
         )
@@ -236,9 +236,9 @@ private fun SeatTypeSelector(
                     label = {
                         Text(
                             text = when (seatType) {
-                                SeatType.WINDOW -> "Window"
-                                SeatType.MIDDLE -> "Middle"
-                                SeatType.AISLE -> "Aisle"
+                                SeatType.WINDOW -> "חלון"
+                                SeatType.MIDDLE -> "אמצע"
+                                SeatType.AISLE -> "מעבר"
                             }
                         )
                     }
@@ -257,7 +257,7 @@ private fun FlightStatusSelector(
     val options = FlightStatus.entries
     Column {
         Text(
-            text = "Flight Status",
+            text = "סטטוס טיסה",
             style = MaterialTheme.typography.labelMedium,
             modifier = Modifier.padding(bottom = 4.dp)
         )
@@ -270,9 +270,9 @@ private fun FlightStatusSelector(
                     label = {
                         Text(
                             text = when (status) {
-                                FlightStatus.ON_TIME -> "On Time"
-                                FlightStatus.DELAYED -> "Delayed"
-                                FlightStatus.CANCELLED -> "Cancelled"
+                                FlightStatus.ON_TIME -> "בזמן"
+                                FlightStatus.DELAYED -> "מאוחר"
+                                FlightStatus.CANCELLED -> "מבוטל"
                             }
                         )
                     }
@@ -296,7 +296,7 @@ fun FlightFormScreenPreview() {
 @Composable
 fun SectionHeaderPreview() {
     FlightLiveUpdateTheme {
-        SectionHeader(title = "Route")
+        SectionHeader(title = "מסלול")
     }
 }
 
