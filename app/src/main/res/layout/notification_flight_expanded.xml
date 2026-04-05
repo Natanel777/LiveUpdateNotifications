@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/notification_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layoutDirection="rtl"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <!-- Main announcement — wraps to 2 lines if needed -->
+    <TextView
+        android:id="@+id/tv_announcement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Compat.Notification" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="#33888888"
+        android:orientation="horizontal" />
+
+    <!-- יציאה -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="יציאה:"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.Compat.Notification"
+            android:layout_marginEnd="6dp" />
+
+        <TextView
+            android:id="@+id/tv_departure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Compat.Notification" />
+    </LinearLayout>
+
+    <!-- שער -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="שער:"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.Compat.Notification"
+            android:layout_marginEnd="6dp" />
+
+        <TextView
+            android:id="@+id/tv_gate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Compat.Notification" />
+    </LinearLayout>
+
+    <!-- מושב -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="מושב:"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.Compat.Notification"
+            android:layout_marginEnd="6dp" />
+
+        <TextView
+            android:id="@+id/tv_seat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Compat.Notification" />
+    </LinearLayout>
+
+    <!-- סטטוס -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="סטטוס:"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.Compat.Notification"
+            android:layout_marginEnd="6dp" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Compat.Notification" />
+    </LinearLayout>
+
+</LinearLayout>

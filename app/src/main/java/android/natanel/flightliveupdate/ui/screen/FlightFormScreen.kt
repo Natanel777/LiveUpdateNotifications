@@ -24,6 +24,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import android.natanel.flightliveupdate.model.FlightFormState
@@ -32,6 +33,9 @@ import android.natanel.flightliveupdate.model.SeatType
 import android.natanel.flightliveupdate.notification.FlightNotificationHelper
 import android.natanel.flightliveupdate.ui.theme.FlightLiveUpdateTheme
 import android.natanel.flightliveupdate.viewmodel.FlightViewModel
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,10 +43,17 @@ fun FlightFormScreen(viewModel: FlightViewModel) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("פרטי טיסה") },
+                title = {
+                    Text(
+                        text = "פרטי טיסה",
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
@@ -200,6 +211,7 @@ fun FlightFormScreen(viewModel: FlightViewModel) {
             item { Spacer(modifier = Modifier.height(16.dp)) }
         }
     }
+    } // end CompositionLocalProvider
 }
 
 @Composable

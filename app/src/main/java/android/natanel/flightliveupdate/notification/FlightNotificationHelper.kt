@@ -11,8 +11,50 @@ import android.natanel.flightliveupdate.model.FlightFormState
 import android.natanel.flightliveupdate.model.FlightStatus
 import android.natanel.flightliveupdate.model.SeatType
 import android.os.Build
+import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 
+/*
+ * ============================================================
+ *  TWO WAYS TO BUILD AN EXPANDED NOTIFICATION
+ * ============================================================
+ *
+ *  APPROACH 1 — NotificationCompat styles (no XML layout)
+ *  -------------------------------------------------------
+ *  Use a built-in style like BigTextStyle or InboxStyle directly
+ *  inside NotificationCompat.Builder. Simple and fast, but:
+ *  - BigTextStyle: plain text only, bold via SpannableString is
+ *    stripped by most OEM notification shades (Samsung, MIUI…).
+ *  - InboxStyle: each addLine() is one line — truncates with "…"
+ *    if the text is too long, no wrapping possible.
+ *
+ *  Example:
+ *      .setStyle(
+ *          NotificationCompat.BigTextStyle().bigText("your text")
+ *      )
+ *      // or
+ *      .setStyle(
+ *          NotificationCompat.InboxStyle()
+ *              .addLine("line 1")
+ *              .addLine("line 2")
+ *      )
+ *
+ *  APPROACH 2 — RemoteViews with a custom XML layout (current)
+ *  ------------------------------------------------------------
+ *  Define the expanded view in res/layout/notification_flight_expanded.xml.
+ *  Full control over every TextView: bold via android:textStyle="bold",
+ *  multi-line wrapping, dividers, spacing — works on ALL devices.
+ *  Requires pairing with DecoratedCustomViewStyle() so the system
+ *  still draws the standard header (app icon, name, timestamp).
+ *
+ *  Example:
+ *      val expandedView = RemoteViews(packageName, R.layout.notification_flight_expanded)
+ *      expandedView.setTextViewText(R.id.tv_departure, "14:30")
+ *      builder
+ *          .setCustomBigContentView(expandedView)
+ *          .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+ * ============================================================
+ */
 object FlightNotificationHelper {
 
     private const val CHANNEL_ID = "flight_updates"
@@ -44,22 +86,27 @@ object FlightNotificationHelper {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val collapsedText = "${state.origin} ← ${state.destination} • שער ${state.gate} • יוצא בעוד ${state.minutesUntilDeparture} דק'"
+        val collapsedText = "${state.destination} • שער ${state.gate} • יוצא בעוד ${state.minutesUntilDeparture} דק "
 
-        val expandedText = buildString {
-            appendLine("טיסה ${state.flightNumber} מ${state.origin} (${state.originCode}) ל${state.destination} (${state.destinationCode}) מתחילה עלייה למטוס.")
-            appendLine()
-            appendLine("🛫  יציאה:   ${state.departureTime}")
-            appendLine("🚪  שער:     ${state.gate}")
-            appendLine("💺  מושב:    ${state.seat} (${state.seatType.displayName()})")
-            append("📋  סטטוס:   ${state.status.displayName()}")
+        // Custom expanded view using RemoteViews for full text wrapping + bold labels
+        val expandedView = RemoteViews(context.packageName, R.layout.notification_flight_expanded).apply {
+            setTextViewText(
+                R.id.tv_announcement,
+                "טיסה ${state.flightNumber}\nמ - ${state.origin} (${state.originCode})\nל - ${state.destination} (${state.destinationCode})\nמתחילה עלייה למטוס. "
+            )
+            setTextViewText(R.id.tv_departure, state.departureTime)
+            setTextViewText(R.id.tv_gate, state.gate)
+            setTextViewText(R.id.tv_seat, "${state.seat} (${state.seatType.displayName()})")
+            setTextViewText(R.id.tv_status, state.status.displayName())
+            setOnClickPendingIntent(R.id.notification_root, pendingIntent)
         }
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle("✈️ טיסה ${state.flightNumber} — עלייה למטוס בקרוב")
             .setContentText(collapsedText)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(expandedText))
+            .setCustomBigContentView(expandedView)
+            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .setContentIntent(pendingIntent)
             .addAction(0, "לחץ לפרטים נוספים", pendingIntent)
             .setAutoCancel(true)
